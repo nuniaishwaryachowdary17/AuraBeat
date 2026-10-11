@@ -1,0 +1,67 @@
+INFO:     Started server process [39868]
+INFO:     Waiting for application startup.
+2026-10-11 06:13:52,803 INFO tiger: Tiger Data off (set TIGER_DATABASE_URL to turn it on)
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:64943 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64945 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64949 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:13:54,821 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:16:01,981 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:64965 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:16:07,088 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:16:14,381 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:64973 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:16:14,441 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+INFO:     connection closed
+2026-10-11 06:16:14,453 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     127.0.0.1:64976 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:16:15,450 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:18:01,981 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:64989 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:18:53,479 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:20:45,801 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:65030 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:20:46,803 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:22:25,145 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:65048 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:22:26,984 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:25:01,983 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:65069 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:26:01,985 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:27:01,982 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:65082 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:28:01,988 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:29:01,985 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:65085 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:30:01,990 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:31:01,983 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:65100 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:32:01,999 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:33:02,003 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed
+INFO:     127.0.0.1:65116 - "WebSocket /ws?role=phone&session=demo&client_id=phone-ggehkf" [accepted]
+2026-10-11 06:34:02,009 INFO hub: connect phone-ggehkf role=phone session=demo
+INFO:     connection open
+2026-10-11 06:35:02,005 INFO hub: disconnect phone-ggehkf role=phone
+INFO:     connection closed

@@ -1,0 +1,47 @@
+[
+ {
+  "start": 0,
+  "label": "Intro",
+  "mood": "restrained"
+ },
+ {
+  "start": 11.23,
+  "label": "Verse",
+  "mood": "cool"
+ },
+ {
+  "start": 51.23,
+  "label": "Breakdown",
+  "mood": "restrained"
+ },
+ {
+  "start": 64.03,
+  "label": "Pre-Hook",
+  "mood": "anticipation"
+ },
+ {
+  "start": 76.83,
+  "label": "Hook",
+  "mood": "peak"
+ },
+ {
+  "start": 102.43,
+  "label": "Verse 2",
+  "mood": "cool"
+ },
+ {
+  "start": 128.0,
+  "label": "Breakdown 2",
+  "mood": "restrained"
+ },
+ {
+  "start": 140.79,
+  "label": "Pre-Hook 2",
+  "mood": "anticipation"
+ },
+ {
+  "start": 153.63,
+  "label": "Final Hook",
+  "mood": "finale"
+ }
+]

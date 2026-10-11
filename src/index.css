@@ -1,0 +1,401 @@
+@import "tailwindcss";
+
+/* AuraBeat design tokens. Use as Tailwind utilities: bg-stage, text-ink-muted, border-aura, etc. */
+@theme {
+  /* "Stage light": one theme for every screen. Deep stage navy, violet and magenta stage light,
+     amber for anticipation, coral to stop, green only for "connected". */
+  --color-stage: #070912;
+  --color-surface: rgb(19 23 41 / 0.72);
+  --color-surface-raised: rgb(28 33 58 / 0.82);
+  --color-ink: #f5f6fb;
+  --color-ink-muted: #a3a9c2;
+  --color-aura: #8b7bff;
+  --color-anticipate: #ffb547;
+  --color-alert: #ff5d73;
+  --color-ok: #34d6a8;
+  --color-mint: #6ff5d2;
+  --color-bubblegum: #ff4fa3;
+  --color-lilac: #b4a8ff;
+  --color-butter: #ffb547;
+  --color-plum: #0b0d1a;
+
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Sora Variable", "Sora", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-aura-drift: aura-drift 18s ease-in-out infinite alternate;
+  --animate-rise: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-burst: burst 1400ms cubic-bezier(0.1, 0.6, 0.3, 1) both;
+  /* Visual polish — decorative only, never used for musical timing */
+  --animate-glow-in: glow-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-float-up: float-up 16s linear infinite;
+  --animate-particle: particle 1300ms cubic-bezier(0.15, 0.7, 0.3, 1) both;
+  --animate-wave-flow: wave-flow 2.6s linear infinite;
+  --animate-crowd-ripple: crowd-ripple 1100ms ease-out both;
+  --animate-beam-open: beam-open 1600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-shimmer: shimmer 1400ms ease-out both;
+  --animate-lyric-in: lyric-in 320ms ease-out both;
+  --animate-spot-sweep: spot-sweep 7s ease-in-out infinite alternate;
+  /* Virtual stage show */
+  --animate-ring-out: ring-out 6s ease-out infinite;
+  --animate-ring-in: ring-in 3.2s ease-in infinite;
+  --animate-flow-x: flow-x 26s linear infinite;
+  --animate-rise-stripes: rise-stripes 0.8s linear infinite;
+  --animate-rotate-slow: rotate-slow 48s linear infinite;
+  --animate-strip-move: strip-move 7s ease-in-out infinite alternate;
+  --animate-aurora: aurora 14s ease-in-out infinite alternate;
+  --animate-twinkle: twinkle 2.8s ease-in-out infinite alternate;
+  --animate-haze-drift: haze-drift 28s ease-in-out infinite alternate;
+  --animate-float-slow: float-slow 18s linear infinite;
+  --animate-camera-drift: camera-drift 18s ease-in-out infinite alternate;
+  --animate-aura-ring: aura-ring 1.8s cubic-bezier(0.15, 0.6, 0.3, 1) both;
+  --animate-aura-bloom: aura-bloom 2.2s cubic-bezier(0.15, 0.6, 0.3, 1) both;
+  --animate-link-draw: link-draw 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-floor-wave: floor-wave 1.8s cubic-bezier(0.15, 0.6, 0.3, 1) both;
+  --animate-beam-sweep: beam-sweep 5s ease-in-out infinite alternate;
+  /* Live Concert lightstick */
+  --animate-live-breathe: live-breathe 4s ease-in-out infinite alternate;
+  --animate-live-flash: live-flash 480ms ease-out both;
+  --animate-live-spin: live-spin 14s linear infinite;
+  --animate-live-cue: live-cue 1800ms ease-out both;
+  /* Encore-night motion */
+  --animate-page-in: page-in 700ms cubic-bezier(0.16, 1, 0.3, 1) 120ms backwards;
+  --animate-fade-up: fade-up 800ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  --animate-caption-in: caption-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  @keyframes aura-drift {
+    0% { transform: translate3d(-6%, -4%, 0) scale(1); }
+    100% { transform: translate3d(6%, 5%, 0) scale(1.12); }
+  }
+
+  @keyframes burst {
+    from { opacity: 0.9; transform: scale(0.4); }
+    to { opacity: 0; transform: scale(2.2); }
+  }
+
+  @keyframes glow-in {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes float-up {
+    0% { transform: translate3d(0, 0, 0); opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translate3d(var(--drift, 0px), -32vh, 0); opacity: 0; }
+  }
+
+  @keyframes particle {
+    from { transform: translate(-50%, -50%) translate(0, 0) scale(1); opacity: 1; }
+    to { transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.3); opacity: 0; }
+  }
+
+  @keyframes wave-flow {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes crowd-ripple {
+    0% { filter: brightness(1); transform: translateY(0); }
+    35% { filter: brightness(2.2); transform: translateY(-6px); }
+    100% { filter: brightness(1); transform: translateY(0); }
+  }
+
+  @keyframes beam-open {
+    0% { opacity: 0; transform: rotate(var(--from, 0deg)) scaleY(0.6); }
+    30% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(var(--to, 0deg)) scaleY(1); }
+  }
+
+  @keyframes shimmer {
+    from { transform: translateX(-100%); opacity: 0; }
+    30% { opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+  }
+
+  @keyframes ring-out {
+    from { transform: scale(0.35); opacity: 0.55; }
+    to { transform: scale(1.5); opacity: 0; }
+  }
+  @keyframes ring-in {
+    from { transform: scale(1.5); opacity: 0; }
+    40% { opacity: 0.6; }
+    to { transform: scale(0.35); opacity: 0; }
+  }
+  @keyframes flow-x {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes rise-stripes {
+    from { transform: translateY(0); }
+    to { transform: translateY(-16px); }
+  }
+  @keyframes rotate-slow {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes strip-move {
+    from { transform: translateX(-12%) skewX(-18deg); }
+    to { transform: translateX(12%) skewX(-18deg); }
+  }
+  @keyframes aurora {
+    from { transform: translateX(-6%) scaleY(0.9); }
+    to { transform: translateX(6%) scaleY(1.1); }
+  }
+  @keyframes twinkle {
+    from { opacity: 0.15; }
+    to { opacity: 1; }
+  }
+  @keyframes haze-drift {
+    from { transform: translate3d(-8%, 0, 0); }
+    to { transform: translate3d(8%, -4%, 0); }
+  }
+  @keyframes float-slow {
+    0% { transform: translate3d(0, 0, 0); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translate3d(var(--drift, 0px), -40%, 0); opacity: 0; }
+  }
+  @keyframes camera-drift {
+    from { transform: translate3d(-0.8%, 0.3%, 0); }
+    to { transform: translate3d(0.8%, -0.3%, 0); }
+  }
+  @keyframes aura-ring {
+    from { transform: scale(0.55); opacity: 0.7; }
+    to { transform: scale(1.6); opacity: 0; }
+  }
+  @keyframes aura-bloom {
+    0% { transform: scale(0.3); opacity: 0.95; }
+    60% { opacity: 0.6; }
+    100% { transform: scale(2.8); opacity: 0; }
+  }
+  @keyframes link-draw {
+    0% { transform: scaleY(0); opacity: 1; }
+    35% { transform: scaleY(1); opacity: 1; }
+    100% { transform: scaleY(1); opacity: 0; }
+  }
+  @keyframes floor-wave {
+    from { transform: translateX(-50%) scaleX(0.15); opacity: 0.9; }
+    to { transform: translateX(-50%) scaleX(1.8); opacity: 0; }
+  }
+  @keyframes beam-sweep {
+    from { transform: rotate(-7deg); }
+    to { transform: rotate(7deg); }
+  }
+
+  @keyframes live-breathe {
+    from { opacity: 0.55; }
+    to { opacity: 1; }
+  }
+
+  @keyframes live-flash {
+    from { opacity: var(--peak, 0.6); }
+    to { opacity: 0; }
+  }
+
+  @keyframes live-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes live-cue {
+    0% { opacity: 0; transform: scale(0.96); }
+    12% { opacity: 1; transform: scale(1); }
+    75% { opacity: 1; }
+    100% { opacity: 0.35; }
+  }
+
+  @keyframes spot-sweep {
+    from { transform: rotate(var(--from, -8deg)); }
+    to { transform: rotate(var(--to, 8deg)); }
+  }
+
+  @keyframes lyric-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes edge-light {
+    0%, 100% { box-shadow: 0 0 30px 2px rgb(139 123 255 / 0.35), 0 0 0 1px rgb(111 245 210 / 0.15); }
+    18% { box-shadow: 0 0 46px 8px rgb(111 245 210 / 0.45), 0 0 0 1px rgb(255 79 163 / 0.35); }
+  }
+  @keyframes preview-progress {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+  @keyframes drop-flash {
+    0% { opacity: 0; transform: scale(0.6); }
+    18% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.25); }
+  }
+  @keyframes drop-streak {
+    0% { transform: scaleX(0) translateX(4vmin); opacity: 1; }
+    60% { opacity: 1; }
+    100% { transform: scaleX(1) translateX(18vmin); opacity: 0; }
+  }
+  @keyframes drop-ring {
+    0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(5); opacity: 0; }
+  }
+  @keyframes drop-word {
+    0% { transform: scale(2.6); filter: blur(18px); opacity: 0; }
+    14% { transform: scale(0.94); filter: blur(0); opacity: 1; }
+    22% { transform: scale(1.04); }
+    30%, 70% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); filter: blur(10px); opacity: 0; }
+  }
+  @keyframes split-left {
+    0% { transform: translate(-28px, 4px); }
+    18% { transform: translate(-10px, 0); }
+    26% { transform: translate(-3px, 2px); }
+    34%, 64% { transform: translate(-2px, 0); }
+    68% { transform: translate(-14px, -3px); }
+    72%, 100% { transform: translate(-4px, 0); }
+  }
+  @keyframes split-right {
+    0% { transform: translate(28px, -4px); }
+    18% { transform: translate(10px, 0); }
+    26% { transform: translate(3px, -2px); }
+    34%, 64% { transform: translate(2px, 0); }
+    68% { transform: translate(14px, 3px); }
+    72%, 100% { transform: translate(4px, 0); }
+  }
+  @keyframes press-ring {
+    0% { transform: scale(0.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+  }
+  @keyframes beam-wipe {
+    0% { transform: translateX(0) skewX(-18deg); }
+    100% { transform: translateX(260%) skewX(-18deg); }
+  }
+  @keyframes wipe-dim {
+    0% { opacity: 0.55; }
+    100% { opacity: 0; }
+  }
+  @keyframes text-sweep {
+    from { background-position: 120% 0; }
+    to { background-position: -40% 0; }
+  }
+  @keyframes count-ring {
+    from { transform: scale(0.4); opacity: 0.9; }
+    to { transform: scale(2.4); opacity: 0; }
+  }
+  @keyframes count-in {
+    from { opacity: 0; transform: scale(1.6); filter: blur(8px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes float-reaction {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+    12% { opacity: 1; transform: translate(0, -20px) scale(1.1); }
+    100% { opacity: 0; transform: translate(var(--drift, 0px), -40vh) scale(0.9); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes page-in {
+    from { opacity: 0; transform: scale(1.06); filter: blur(14px); }
+    /* "none" (not blur(0)), so full-screen children aren't trapped inside this wrapper once it lands */
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes caption-in {
+    from { opacity: 0; transform: translateY(10px) scale(0.96); filter: blur(4px); }
+    to { opacity: 1; transform: none; filter: blur(0); }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-stage text-ink font-sans antialiased;
+    min-height: 100dvh;
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-aura);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  /* Every surface is frosted glass over the night sky. */
+  [class*="bg-surface"] {
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    backdrop-filter: blur(18px) saturate(150%);
+  }
+
+  /* The brand gradient: stage light from violet to magenta. Static: it's a colour, not an effect. */
+  .text-candy {
+    background-image: linear-gradient(95deg, #b4a8ff 0%, #8b7bff 40%, #ff4fa3 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-candy {
+    background-image: linear-gradient(100deg, #8b7bff 0%, #a565f0 50%, #ff4fa3 100%);
+  }
+
+  /* A highlight of stage light sweeping once across a headline. */
+  .text-sweep {
+    background-image: linear-gradient(105deg, var(--sweep-base, #f5f6fb) 40%, #ffffff 47%, #ff9fd0 50%, #c9c0ff 53%, var(--sweep-base, #f5f6fb) 60%);
+    background-size: 260% 100%;
+    background-position: -40% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: text-sweep 1.8s cubic-bezier(0.3, 0, 0.2, 1) 0.9s backwards;
+  }
+
+  /* Sections wipe in from below, like light rising over them, as they scroll into view. */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(36px) scale(0.98);
+    /* not fully clipped: browsers treat a fully clipped element as off-screen, so it would never reveal */
+    clip-path: inset(0 0 55% 0 round 24px);
+    transition:
+      opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      clip-path 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal][data-in] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0 round 24px);
+  }
+
+  /* A soft lit edge on glass cards. */
+  .edge-glow {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.07),
+      0 24px 60px -30px rgb(0 0 0 / 0.8);
+  }
+}
+
+/* Reduced motion: the app setting, mirrored on <html> (it starts from the device's Reduce Motion and
+   follows it until the person picks Motion on/off in the app). */
+html[data-reduced-motion="true"] [data-reveal] {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

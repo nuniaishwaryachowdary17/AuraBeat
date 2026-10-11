@@ -1,0 +1,33 @@
+# Run from this deploy/ folder:  docker compose up -d --build
+# Needs a .env next to this file (deploy/.env) with at least DOMAIN=<your-server-ip-with-dashes>.sslip.io
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    environment:
+      TIGER_DATABASE_URL: ${TIGER_DATABASE_URL:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash}
+      LIGHT_BUFFER_MS: ${LIGHT_BUFFER_MS:-150}
+    expose:
+      - "8001"
+
+  # HTTPS with a real certificate, automatically. Needed for wss://, screen wake lock and
+  # fullscreen on phones, and lets phones join from any network (no hotspot).
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on: [app]
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env, e.g. 203-0-113-5.sslip.io}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+
+volumes:
+  caddy_data: {}

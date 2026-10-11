@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+  <meta name="caption-page-token" content="__PAGE_TOKEN__">
+  <meta name="theme-color" content="#070912">
+  <title>AuraBeat — Live Captions</title>
+  <link id="favicon" rel="icon" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Inter", system-ui, sans-serif;
+      color: #f5f6fb;
+      background: #070912;
+      --caption-size: 32px;
+      --pink: #ff4fa3;
+      --lilac: #b4a8ff;
+      --butter: #ffb547;
+      --mint: #34d6a8;
+      --violet: #8b7bff;
+      --muted: #a3a9c2;
+      --border: rgb(255 255 255 / 0.1);
+      --glass: rgb(19 23 41 / 0.72);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px 16px calc(32px + env(safe-area-inset-bottom));
+      background: radial-gradient(ellipse at 50% -10%, rgb(139 123 255 / 0.22), transparent 55%), #070912;
+      overflow-x: hidden;
+    }
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      z-index: -1;
+      width: 70vmax;
+      height: 70vmax;
+      border-radius: 50%;
+      filter: blur(110px);
+      animation: drift 18s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    body::before { top: -30%; left: -25%; background: rgb(139 123 255 / 0.12); }
+    body::after { bottom: -35%; right: -25%; background: rgb(255 79 163 / 0.07); animation-delay: -9s; }
+    @keyframes drift { to { transform: translate(8%, 6%) scale(1.12); } }
+    main { max-width: 860px; margin: 0 auto; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand {
+      font-family: "Sora", sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.4px; color: #f5f6fb;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .brand::before {
+      content: ""; width: 26px; height: 22px; border-radius: 3px;
+      background: linear-gradient(45deg, #8b7bff, #ff4fa3);
+      -webkit-mask: linear-gradient(#000 0 0) 0 30%/14% 40% no-repeat, linear-gradient(#000 0 0) 21% 12%/14% 76% no-repeat,
+        linear-gradient(#000 0 0) 50% 0/14% 100% no-repeat, linear-gradient(#000 0 0) 79% 18%/14% 64% no-repeat, linear-gradient(#000 0 0) 100% 34%/14% 32% no-repeat;
+      mask: linear-gradient(#000 0 0) 0 30%/14% 40% no-repeat, linear-gradient(#000 0 0) 21% 12%/14% 76% no-repeat,
+        linear-gradient(#000 0 0) 50% 0/14% 100% no-repeat, linear-gradient(#000 0 0) 79% 18%/14% 64% no-repeat, linear-gradient(#000 0 0) 100% 34%/14% 32% no-repeat;
+    }
+    .badge {
+      padding: 6px 12px; border: 1px solid var(--border); border-radius: 999px; background: var(--glass);
+      color: var(--muted); font-size: 12px; font-weight: 500;
+    }
+    h1 { font-family: "Sora", sans-serif; font-size: clamp(36px, 8vw, 56px); font-weight: 600; letter-spacing: -1.5px; line-height: 1.05; margin: 28px 0 10px; }
+    p { color: var(--muted); line-height: 1.6; }
+    .panel {
+      margin-top: 18px; padding: 20px; border: 1px solid var(--border); border-radius: 28px;
+      background: var(--glass); backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 24px 60px -30px rgb(0 0 0 / 0.8);
+    }
+    .caption-panel { position: relative; overflow: hidden; }
+    .caption-panel::before {
+      content: ""; position: absolute; inset: 0 0 auto; height: 4px;
+      background: linear-gradient(90deg, transparent, #8b7bff, #ff4fa3, transparent);
+    }
+    .option { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; line-height: 1.5; }
+    .option input { width: 22px; height: 22px; margin: 0; accent-color: var(--violet); flex-shrink: 0; }
+    .small { font-size: 13px; color: var(--muted); }
+    .buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    button {
+      min-height: 48px; padding: 12px 20px; font: inherit; font-weight: 600; color: #f5f6fb;
+      background: rgb(255 255 255 / 0.08); border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+      transition: transform 0.15s ease, filter 0.2s ease;
+    }
+    button:active:not(:disabled) { transform: scale(0.95); }
+    #start {
+      border: 0; color: #fff; font-family: "Sora", sans-serif; font-size: 16px; font-weight: 600;
+      background: linear-gradient(100deg, #8b7bff, #a565f0 50%, #ff4fa3);
+      box-shadow: 0 16px 40px -18px #8b7bff;
+    }
+    button:disabled, input:disabled { opacity: 0.5; cursor: not-allowed; }
+    button:focus-visible, input:focus-visible { outline: 3px solid var(--mint); outline-offset: 4px; }
+    #status { min-height: 28px; margin-top: 18px; color: var(--butter); font-weight: 700; line-height: 1.5; }
+    .size-control { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 20px; font-weight: 700; }
+    .size-control input { flex: 1; min-width: 130px; min-height: 32px; accent-color: var(--violet); }
+    .section-label { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; font-weight: 600; line-height: 1.5; }
+    /* A little equalizer that dances while words are arriving */
+    .eq { display: inline-flex; align-items: flex-end; gap: 3px; height: 16px; }
+    .eq i { width: 3px; height: 30%; border-radius: 2px; background: var(--violet); }
+    body.listening .eq i { animation: eq 0.9s ease-in-out infinite; }
+    body.listening .eq i:nth-child(2) { animation-delay: -0.3s; background: var(--lilac); }
+    body.listening .eq i:nth-child(3) { animation-delay: -0.6s; background: var(--pink); }
+    body.listening .eq i:nth-child(4) { animation-delay: -0.15s; background: var(--violet); }
+    @keyframes eq { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+    #currentText {
+      font-family: "Sora", sans-serif; font-weight: 500; font-size: var(--caption-size); line-height: 1.4;
+      margin-top: 18px; min-height: 140px; white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    #currentText .w { display: inline-block; animation: word 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+    @keyframes word { from { opacity: 0; transform: translateY(10px) scale(0.95); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+    #currentText:empty::before { content: attr(data-empty); color: #6f7591; font-size: 0.7em; }
+    #history { max-height: 420px; overflow-y: auto; overflow-wrap: anywhere; overscroll-behavior: contain; }
+    #history p {
+      font-family: "Sora", sans-serif; font-size: calc(var(--caption-size) * 0.7); color: #f5f6fb;
+      white-space: pre-wrap; padding: 12px 0; margin: 0; border-bottom: 1px solid var(--border);
+      animation: word 0.5s ease-out both;
+    }
+    #phones { margin-top: 8px; color: var(--mint); font-weight: 700; }
+    footer { margin-top: 24px; font-size: 13px; line-height: 1.6; color: var(--muted); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+<main>
+  <header>
+    <div class="brand">AuraBeat</div>
+    <div class="badge">Live captions, automatic</div>
+  </header>
+
+  <h1>Follow the words.</h1>
+
+  <p>
+    Transcribe the person speaking or singing into the microphone.
+    No generated host, spoken announcements, or invented song introductions.
+    Automatic captions may contain errors, especially over music and crowd noise.
+  </p>
+
+  <section class="panel" aria-label="Microphone controls">
+    <label class="option">
+      <input id="consent" type="checkbox">
+      <span>
+        I understand that this microphone audio will be sent to ElevenLabs
+        for transcription and may use account credits.
+      </span>
+    </label>
+
+    <label class="option">
+      <input id="share" type="checkbox" checked>
+      <span>
+        Show captions on fans' phones
+        <br>
+        <span class="small">
+          Finished lines (and a live draft) go to every phone in the AuraBeat session, on the
+          Live Concert screen and over the lightstick.
+        </span>
+      </span>
+    </label>
+
+    <label class="option">
+      <input id="speechProcessing" type="checkbox" checked>
+      <span>
+        Speech cleanup
+        <br>
+        <span class="small">
+          Requests echo cancellation, noise suppression, and automatic gain.
+          You can compare singing results with this turned off.
+        </span>
+      </span>
+    </label>
+
+    <div class="buttons">
+      <button id="start" type="button" disabled>
+        Start captions
+      </button>
+
+      <button id="stop" type="button" disabled>
+        Stop microphone
+      </button>
+
+      <button id="clear" type="button">
+        Clear text
+      </button>
+    </div>
+
+    <div id="status" role="status">Loading caption library…</div>
+    <div id="phones" role="status"></div>
+
+    <p class="small">
+      Keep this tab visible and the laptop awake.
+      Sessions stop after 30 minutes or when you press Stop.
+      Clearing text is available when stopped.
+    </p>
+  </section>
+
+  <div class="size-control">
+    <label for="textSize">Caption size</label>
+    <input
+      id="textSize"
+      type="range"
+      min="24"
+      max="56"
+      step="2"
+      value="32"
+    >
+    <output id="sizeValue" for="textSize">32 px</output>
+  </div>
+
+  <section class="panel caption-panel" aria-label="Current caption">
+    <div class="section-label">
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span id="currentLabel">Live draft: words may change</span>
+    </div>
+
+    <div
+      id="currentText"
+      dir="auto"
+      data-empty="Recognized words will appear here."
+    ></div>
+  </section>
+
+  <section class="panel" aria-label="Completed captions">
+    <div class="section-label">
+      Completed segments · automatically transcribed, not verified
+    </div>
+
+    <p id="emptyHistory" class="small">
+      Completed segments will appear after a pause in speech.
+    </p>
+
+    <div
+      id="history"
+      role="log"
+      aria-live="polite"
+      aria-relevant="additions"
+    ></div>
+  </section>
+
+  <footer>
+    With "Show captions on fans' phones" on, lines are sent through the AuraBeat backend
+    (captions_server.py forwards them; set AURABEAT_BACKEND to change where). The page keeps up to 200 completed
+    segments in memory and does not save audio or transcripts to your project.
+    ElevenLabs processes audio under your account’s service and retention settings.
+  </footer>
+</main>
+
+<script
+  src="https://unpkg.com/@elevenlabs/client@1.27.0/dist/lib.iife.js"
+  integrity="sha384-ekuWfdL0BkeVAWv24yeCWtzVwYDQd4pCkPL5TKVDLmwDBeVxS2cTwo0wfsUNaFkJ"
+  crossorigin="anonymous"
+></script>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const MAX_SESSION_MS = 30 * 60 * 1000;
+  const MAX_SEGMENTS = 200;
+
+  const icon =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">' +
+    '<rect width="32" height="32" rx="8" fill="#070912"/>' +
+    '<path d="M8 12v8m8-14v20m8-14v8" stroke="#8b7bff" ' +
+    'stroke-width="4" stroke-linecap="round"/></svg>';
+
+  $("favicon").href =
+    "data:image/svg+xml," + encodeURIComponent(icon);
+
+  $("textSize").addEventListener("input", () => {
+    const size = Number($("textSize").value);
+    document.documentElement.style.setProperty(
+      "--caption-size",
+      `${size}px`
+    );
+    $("sizeValue").textContent = `${size} px`;
+  });
+
+  const library = window.ElevenLabsClient;
+
+  const pageToken = document.querySelector(
+    'meta[name="caption-page-token"]'
+  )?.content || "";
+
+  let available = false;
+  let busy = false;
+  let generation = 0;
+  let connection = null;
+  let tokenRequest = null;
+  let tokenTimer = null;
+  let startupTimer = null;
+  let sessionTimer = null;
+  let currentIsDraft = false;
+
+  function updateControls() {
+    $("start").disabled =
+      !available ||
+      busy ||
+      !$("consent").checked ||
+      document.hidden;
+
+    $("stop").disabled = !busy;
+    document.body.classList.toggle("listening", busy);
+    $("clear").disabled = busy;
+    $("consent").disabled = busy;
+    $("speechProcessing").disabled = busy;
+  }
+
+  function stop(message) {
+    generation += 1;
+
+    clearTimeout(tokenTimer);
+    clearTimeout(startupTimer);
+    clearTimeout(sessionTimer);
+
+    tokenTimer = null;
+    startupTimer = null;
+    sessionTimer = null;
+
+    tokenRequest?.abort();
+    tokenRequest = null;
+
+    const old = connection;
+    connection = null;
+    busy = false;
+
+    let cleanupFailed = false;
+
+    if (old) {
+      try {
+        old.close();
+      } catch {
+        cleanupFailed = true;
+      }
+    }
+
+    if (currentIsDraft && $("currentText").textContent) {
+      $("currentLabel").textContent =
+        "Unfinished draft, not a completed line";
+    }
+
+    $("status").textContent = cleanupFailed
+      ? "Could not finish microphone cleanup. Close this tab to stop capture."
+      : message;
+
+    updateControls();
+  }
+
+  function readableError(error) {
+    const name = String(error?.name || "");
+    const message = String(error?.message || error?.error || "");
+
+    if (
+      name === "NotAllowedError" ||
+      /permission|denied|notallowed/i.test(message)
+    ) {
+      return "Microphone permission was blocked. Allow microphone access in browser site settings.";
+    }
+
+    if (
+      name === "NotFoundError" ||
+      /notfound|requested device/i.test(message)
+    ) {
+      return "No usable microphone was found. Check the laptop input device.";
+    }
+
+    if (
+      name === "NotReadableError" ||
+      /could not start audio|in use/i.test(message)
+    ) {
+      return "The microphone could not start. Close other microphone programs and try again.";
+    }
+
+    return "Caption connection failed. Check microphone access, internet, and ElevenLabs usage.";
+  }
+
+  // Send captions to every phone through the AuraBeat backend (via captions_server.py).
+  let lastDraftSent = 0;
+  function share(text, final) {
+    if (!$("share").checked) return;
+    const now = performance.now();
+    if (!final && now - lastDraftSent < 500) return; // drafts change constantly: at most 2 per second
+    if (!final) lastDraftSent = now;
+    fetch("/caption", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Caption-Page": pageToken },
+      body: JSON.stringify({ text, final }),
+      cache: "no-store"
+    })
+      .then(r => r.json())
+      .then(r => {
+        $("phones").textContent = r.forwarded
+          ? `Showing on ${r.delivered} phone${r.delivered === 1 ? "" : "s"}.`
+          : "Not reaching phones: is the AuraBeat backend running?";
+      })
+      .catch(() => {});
+  }
+
+  function showWords(text) {
+    const el = $("currentText");
+    el.replaceChildren();
+    text.split(/\s+/).forEach((w, i) => {
+      const span = document.createElement("span");
+      span.className = "w";
+      span.style.animationDelay = `${Math.min(i, 12) * 40}ms`;
+      span.textContent = w + " ";
+      el.appendChild(span);
+    });
+  }
+
+  function addCompletedText(text) {
+    const history = $("history");
+    const followingBottom =
+      history.scrollHeight - history.scrollTop - history.clientHeight < 80;
+
+    const paragraph = document.createElement("p");
+    paragraph.dir = "auto";
+    paragraph.textContent = text;
+    history.appendChild(paragraph);
+
+    while (history.children.length > MAX_SEGMENTS) {
+      history.firstElementChild.remove();
+    }
+
+    $("emptyHistory").hidden = true;
+
+    if (followingBottom) {
+      history.scrollTop = history.scrollHeight;
+    }
+  }
+
+  $("consent").addEventListener("change", updateControls);
+
+  $("stop").addEventListener("click", () => {
+    stop("Stopped. No new audio is being sent by this page.");
+  });
+
+  $("clear").addEventListener("click", () => {
+    if (busy) return;
+
+    $("currentText").textContent = "";
+    $("history").replaceChildren();
+    $("emptyHistory").hidden = false;
+    $("currentLabel").textContent = "Live draft: words may change";
+    currentIsDraft = false;
+    $("status").textContent = "Displayed text cleared.";
+  });
+
+  $("start").addEventListener("click", async () => {
+    if (
+      !available ||
+      busy ||
+      !$("consent").checked ||
+      document.hidden
+    ) return;
+
+    busy = true;
+    const run = ++generation;
+    updateControls();
+
+    $("status").textContent = "Requesting a temporary transcription token…";
+    $("currentText").textContent = "";
+    $("currentLabel").textContent = "Live draft: words may change";
+    currentIsDraft = false;
+
+    const controller = new AbortController();
+    tokenRequest = controller;
+
+    tokenTimer = setTimeout(() => controller.abort(), 20000);
+
+    try {
+      const response = await fetch("/scribe-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Caption-Page": pageToken
+        },
+        body: "{}",
+        cache: "no-store",
+        signal: controller.signal
+      });
+
+      const result = await response.json();
+
+      clearTimeout(tokenTimer);
+      tokenTimer = null;
+
+      if (run !== generation) return;
+
+      tokenRequest = null;
+
+      if (!response.ok || typeof result.token !== "string") {
+        stop(
+          typeof result.error === "string"
+            ? result.error
+            : "Could not obtain a transcription token."
+        );
+        return;
+      }
+
+      const cleanup = $("speechProcessing").checked;
+      const { Scribe, RealtimeEvents, CommitStrategy } = library;
+
+      $("status").textContent =
+        "Connecting. Allow microphone access when the browser asks.";
+
+      const current = Scribe.connect({
+        token: result.token,
+        modelId: "scribe_v2_realtime",
+        commitStrategy: CommitStrategy.VAD,
+        vadSilenceThresholdSecs: 1.0,
+        microphone: {
+          echoCancellation: cleanup,
+          noiseSuppression: cleanup,
+          autoGainControl: cleanup
+        }
+      });
+
+      connection = current;
+
+      startupTimer = setTimeout(() => {
+        if (run === generation) {
+          stop("Connection timed out. Check microphone permissions and try again.");
+        }
+      }, 30000);
+
+      current.on(RealtimeEvents.SESSION_STARTED, () => {
+        if (run !== generation) return;
+
+        clearTimeout(startupTimer);
+        startupTimer = null;
+
+        $("status").textContent =
+          "Transcription connected. Allow the microphone, then speak or sing.";
+
+        clearTimeout(sessionTimer);
+        sessionTimer = setTimeout(() => {
+          if (run === generation) {
+            stop("The 30-minute session ended. Start again when ready.");
+          }
+        }, MAX_SESSION_MS);
+      });
+
+      current.on(RealtimeEvents.PARTIAL_TRANSCRIPT, data => {
+        if (run !== generation || typeof data?.text !== "string") return;
+
+        const text = data.text.trim();
+        if (!text) return;
+
+        currentIsDraft = true;
+        $("currentLabel").textContent = "Live draft: words may change";
+        $("currentText").textContent = text;
+        share(text, false);
+        $("status").textContent = "Receiving automatic captions.";
+      });
+
+      current.on(RealtimeEvents.COMMITTED_TRANSCRIPT, data => {
+        if (run !== generation || typeof data?.text !== "string") return;
+
+        const text = data.text.trim();
+        if (!text) return;
+
+        addCompletedText(text);
+        share(text, true);
+
+        currentIsDraft = false;
+        $("currentLabel").textContent =
+          "Latest completed line, automatic";
+        showWords(text);
+        $("status").textContent =
+          "Segment completed. Listening for more audio.";
+      });
+
+      const serviceErrors = {
+        AUTH_ERROR:
+          "ElevenLabs rejected the session. Check API permissions and restart.",
+        QUOTA_EXCEEDED:
+          "ElevenLabs quota exceeded. Check credits and account limits.",
+        UNACCEPTED_TERMS:
+          "Open ElevenLabs and check for terms you need to accept.",
+        RATE_LIMITED:
+          "ElevenLabs rate limit reached. Wait before starting again.",
+        SESSION_TIME_LIMIT_EXCEEDED:
+          "The service ended this session. Start again to continue.",
+        INSUFFICIENT_AUDIO_ACTIVITY:
+          "The service ended the session because it detected insufficient audio activity.",
+        TRANSCRIBER_ERROR:
+          "The transcription service reported an error. Try a new session.",
+        INPUT_ERROR:
+          "The service rejected the audio input. Check microphone settings.",
+        QUEUE_OVERFLOW:
+          "The service could not keep up with incoming audio. Start a new session.",
+        RESOURCE_EXHAUSTED:
+          "The service is at capacity. Wait before trying again.",
+        CHUNK_SIZE_EXCEEDED:
+          "The service rejected an audio chunk. Stop and restart the session."
+      };
+
+      for (const [eventName, message] of Object.entries(serviceErrors)) {
+        const event = RealtimeEvents[eventName];
+
+        if (event) {
+          current.on(event, () => {
+            if (run === generation) stop(message);
+          });
+        }
+      }
+
+      current.on(RealtimeEvents.ERROR, error => {
+        if (run === generation) stop(readableError(error));
+      });
+
+      current.on(RealtimeEvents.CLOSE, () => {
+        if (run === generation) {
+          stop("Caption connection closed. Start again when ready.");
+        }
+      });
+
+    } catch (error) {
+      if (run !== generation) return;
+
+      stop(
+        error?.name === "AbortError"
+          ? "Token request timed out. Check the captions server."
+          : "Could not start captions. Check the captions server and internet connection."
+      );
+    }
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && busy) {
+      stop("Stopped because the tab was hidden. Start again when ready.");
+    } else {
+      updateControls();
+    }
+  });
+
+  window.addEventListener("pagehide", () => {
+    stop("Page closed.");
+  });
+
+  if (
+    !library?.Scribe ||
+    !library?.RealtimeEvents ||
+    !library?.CommitStrategy
+  ) {
+    $("status").textContent =
+      "Could not load the caption library. Check your internet and refresh.";
+
+  } else if (
+    !window.isSecureContext ||
+    !navigator.mediaDevices?.getUserMedia
+  ) {
+    $("status").textContent =
+      "Open this page at http://localhost:8765 in current Chrome or Edge.";
+
+  } else if (!/^[A-Za-z0-9_-]{32,}$/.test(pageToken)) {
+    $("status").textContent =
+      "Open this page through captions_server.py at http://localhost:8765, not by double-clicking the file.";
+
+  } else {
+    available = true;
+    $("status").textContent =
+      "Ready. Read the audio notice, then start captions.";
+  }
+
+  updateControls();
+})();
+</script>
+</body>
+</html>
